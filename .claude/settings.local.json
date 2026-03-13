@@ -4,7 +4,8 @@
       "Bash(mv /tmp/_tvp_env_local /Users/hj/the-vintage-prague/.env.local && mv /tmp/_tvp_claude /Users/hj/the-vintage-prague/.claude)",
       "Bash(npm install:*)",
       "Bash(npm run:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(rm -rf /Users/hj/the-vintage-prague/.claude/_tvp_claude && git add -A && git commit -m \"$\\(cat <<'EOF'\nchore: remove stale .claude/_tvp_claude artifact\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   }
 }
