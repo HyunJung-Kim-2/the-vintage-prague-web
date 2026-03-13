@@ -8,7 +8,8 @@
       "Bash(rm -rf /Users/hj/the-vintage-prague/.claude/_tvp_claude && git add -A && git commit -m \"$\\(cat <<'EOF'\nchore: remove stale .claude/_tvp_claude artifact\n\nCo-Authored-By: Claude Sonnet 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
       "Bash(git push:*)",
       "Bash(npm uninstall:*)",
-      "Bash(ls /Users/hj/the-vintage-prague/app/\\\\\\(shop\\\\\\)/ 2>/dev/null)"
+      "Bash(ls /Users/hj/the-vintage-prague/app/\\\\\\(shop\\\\\\)/ 2>/dev/null)",
+      "Bash(node -e \"const s = require\\('/Users/hj/the-vintage-prague/node_modules/stripe'\\); console.log\\(s.Stripe?.PACKAGE_VERSION || 'check manually'\\)\" 2>/dev/null; grep -r \"apiVersion\" /Users/hj/the-vintage-prague/node_modules/stripe/cjs/stripe.core.js 2>/dev/null | head -3)"
     ]
   }
 }

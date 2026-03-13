@@ -33,10 +33,10 @@ export default function ImageUploader({
       const ext = file.name.split(".").pop();
       const path = `${productId}/${Date.now()}.${ext}`;
       const { data, error } = await supabase.storage
-        .from("product-images")
+        .from("product-image")
         .upload(path, file, { upsert: false });
       if (error) { alert(error.message); continue; }
-      const { data: { publicUrl } } = supabase.storage.from("product-images").getPublicUrl(data.path);
+      const { data: { publicUrl } } = supabase.storage.from("product-image").getPublicUrl(data.path);
       const position = images.length;
       const { data: imgRow } = await supabase
         .from("product_images")
@@ -52,7 +52,7 @@ export default function ImageUploader({
     if (!img.id) return;
     await supabase.from("product_images").delete().eq("id", img.id);
     const path = new URL(img.url).pathname.split("/product-images/")[1];
-    await supabase.storage.from("product-images").remove([path]);
+    await supabase.storage.from("product-image").remove([path]);
     setImages((prev) => prev.filter((i) => i.url !== img.url).map((i, idx) => ({ ...i, position: idx })));
   }
 

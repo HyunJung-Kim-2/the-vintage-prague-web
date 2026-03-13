@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { formatPrice, conditionLabel } from "@/lib/utils";
+import { formatPrice } from "@/lib/utils";
 import type { Product } from "@/types/database";
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -21,11 +21,6 @@ export default function ProductCard({ product }: { product: Product }) {
             No Image
           </div>
         )}
-        <div className="absolute top-2 left-2">
-          <span className="bg-background/80 text-offwhite text-[10px] tracking-widest uppercase px-2 py-1">
-            {conditionLabel(product.condition)}
-          </span>
-        </div>
       </div>
       <div>
         {product.brand && (

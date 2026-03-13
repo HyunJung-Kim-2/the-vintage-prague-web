@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { formatPrice, categoryLabel, conditionLabel } from "@/lib/utils";
+import { formatPrice, categoryLabel } from "@/lib/utils";
 import { Plus } from "lucide-react";
 
 export default async function AdminProductsPage() {
@@ -30,7 +30,7 @@ export default async function AdminProductsPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-offwhite text-sm">{product.name}</p>
-                <p className="text-muted text-xs mt-1">{categoryLabel(product.category)} · {conditionLabel(product.condition)}</p>
+                <p className="text-muted text-xs mt-1">{categoryLabel(product.category)}</p>
               </div>
               <div className="text-right">
                 <p className="text-offwhite text-sm">{formatPrice(product.price)}</p>
@@ -50,7 +50,6 @@ export default async function AdminProductsPage() {
             <tr className="border-b border-border text-left">
               <th className="text-xs tracking-widest uppercase text-muted pb-3 pr-4">Name</th>
               <th className="text-xs tracking-widest uppercase text-muted pb-3 pr-4">Category</th>
-              <th className="text-xs tracking-widest uppercase text-muted pb-3 pr-4">Condition</th>
               <th className="text-xs tracking-widest uppercase text-muted pb-3 pr-4">Price</th>
               <th className="text-xs tracking-widest uppercase text-muted pb-3 pr-4">Stock</th>
               <th className="text-xs tracking-widest uppercase text-muted pb-3">Status</th>
@@ -66,7 +65,6 @@ export default async function AdminProductsPage() {
                   {product.brand && <p className="text-muted text-xs">{product.brand}</p>}
                 </td>
                 <td className="py-3 pr-4 text-muted">{categoryLabel(product.category)}</td>
-                <td className="py-3 pr-4 text-muted">{conditionLabel(product.condition)}</td>
                 <td className="py-3 pr-4 text-offwhite">{formatPrice(product.price)}</td>
                 <td className="py-3 pr-4 text-offwhite">{product.stock}</td>
                 <td className="py-3">

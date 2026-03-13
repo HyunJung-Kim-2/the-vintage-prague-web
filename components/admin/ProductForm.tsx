@@ -7,12 +7,6 @@ import ImageUploader from "./ImageUploader";
 import type { Product } from "@/types/database";
 
 const CATEGORIES = ["bags", "clothing", "shoes", "wallets"] as const;
-const CONDITIONS = [
-  { value: "new", label: "New" },
-  { value: "s", label: "S Grade" },
-  { value: "a", label: "A Grade" },
-  { value: "b", label: "B Grade" },
-] as const;
 
 function slugify(text: string) {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
@@ -29,9 +23,7 @@ export default function ProductForm({ product }: { product?: Product }) {
     description: product?.description ?? "",
     brand: product?.brand ?? "",
     category: product?.category ?? "bags",
-    condition: product?.condition ?? "a",
     price: product?.price?.toString() ?? "",
-    size: product?.size ?? "",
     stock: product?.stock?.toString() ?? "1",
     is_active: product?.is_active ?? true,
   });
@@ -60,9 +52,9 @@ export default function ProductForm({ product }: { product?: Product }) {
       description: form.description || null,
       brand: form.brand || null,
       category: form.category,
-      condition: form.condition,
+      condition: "a",
       price: parseFloat(form.price),
-      size: form.size || null,
+      size: null,
       stock: parseInt(form.stock),
       is_active: form.is_active,
     };
@@ -102,19 +94,9 @@ export default function ProductForm({ product }: { product?: Product }) {
           <input name="brand" value={form.brand} onChange={handleChange} className={inputClass} />
         </div>
         <div>
-          <label className={labelClass}>Size</label>
-          <input name="size" value={form.size} onChange={handleChange} className={inputClass} />
-        </div>
-        <div>
           <label className={labelClass}>Category *</label>
           <select name="category" value={form.category} onChange={handleChange} className={inputClass}>
             {CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
-        </div>
-        <div>
-          <label className={labelClass}>Condition *</label>
-          <select name="condition" value={form.condition} onChange={handleChange} className={inputClass}>
-            {CONDITIONS.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
           </select>
         </div>
         <div>

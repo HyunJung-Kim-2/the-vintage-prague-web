@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import ImageCarousel from "@/components/shop/ImageCarousel";
 import AddToCartButton from "@/components/shop/AddToCartButton";
-import { formatPrice, conditionLabel, categoryLabel } from "@/lib/utils";
+import { formatPrice, categoryLabel } from "@/lib/utils";
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -40,16 +40,6 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               <p className="text-xs tracking-widest uppercase text-muted mb-1">Category</p>
               <p className="text-offwhite">{categoryLabel(product.category)}</p>
             </div>
-            <div>
-              <p className="text-xs tracking-widest uppercase text-muted mb-1">Condition</p>
-              <p className="text-offwhite">{conditionLabel(product.condition)}</p>
-            </div>
-            {product.size && (
-              <div>
-                <p className="text-xs tracking-widest uppercase text-muted mb-1">Size</p>
-                <p className="text-offwhite">{product.size}</p>
-              </div>
-            )}
           </div>
 
           {product.description && (

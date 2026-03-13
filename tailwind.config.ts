@@ -13,6 +13,7 @@ const config: Config = {
         burgundy: {
           DEFAULT: "#6D1A2A",
           light: "#8B2235",
+          vivid: "#9B1535",
           dark: "#4F1220",
         },
         offwhite: "#F0EDE8",

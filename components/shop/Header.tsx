@@ -26,7 +26,7 @@ export default async function Header() {
           </nav>
 
           {/* Logo center */}
-          <Link href="/" className="font-serif text-xl tracking-widest uppercase text-offwhite absolute left-1/2 -translate-x-1/2">
+          <Link href="/" className="font-serif text-xl tracking-widest uppercase text-burgundy-vivid absolute left-1/2 -translate-x-1/2">
             The Vintage Prague
           </Link>
 
