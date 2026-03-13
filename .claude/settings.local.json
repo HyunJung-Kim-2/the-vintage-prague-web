@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mv /tmp/_tvp_env_local /Users/hj/the-vintage-prague/.env.local && mv /tmp/_tvp_claude /Users/hj/the-vintage-prague/.claude)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}
