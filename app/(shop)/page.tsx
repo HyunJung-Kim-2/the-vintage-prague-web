@@ -29,12 +29,12 @@ export default async function HomePage() {
             <p className="text-xs tracking-[0.4em] uppercase text-muted mb-6">Prague, Czech Republic</p>
           </FadeIn>
           <FadeIn delay={0.1}>
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-burgundy-vivid mb-8 leading-none">
+            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-burgundy-vivid mb-8 leading-none tracking-tight">
               The Vintage<br />Prague
             </h1>
           </FadeIn>
           <FadeIn delay={0.2}>
-            <p className="text-muted text-sm tracking-widest uppercase mb-10">
+            <p className="text-muted text-sm tracking-[0.4em] uppercase mb-10">
               Curated vintage fashion — each piece, a story
             </p>
           </FadeIn>
@@ -76,7 +76,7 @@ export default async function HomePage() {
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
           <div className="flex items-center justify-between mb-12">
             <p className="text-xs tracking-[0.4em] uppercase text-muted">New Arrivals</p>
-            <Link href="/products" className="text-xs tracking-widest uppercase text-muted hover:text-offwhite transition-colors">
+            <Link href="/products" className="text-xs tracking-[0.4em] uppercase text-muted hover:text-offwhite transition-colors">
               View All →
             </Link>
           </div>
