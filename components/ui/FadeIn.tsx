@@ -11,7 +11,7 @@ interface FadeInProps {
 }
 
 export default function FadeIn({ children, delay = 0, className, y = 24 }: FadeInProps) {
-  const ref = useRef(null);
+  const ref = useRef<HTMLDivElement>(null);
   const isInView = useInView(ref, { once: true, margin: "-60px" });
 
   return (
