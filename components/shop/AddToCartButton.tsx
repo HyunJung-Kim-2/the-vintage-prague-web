@@ -25,7 +25,7 @@ export default function AddToCartButton({ product }: { product: Product }) {
   return (
     <button
       onClick={handleAdd}
-      className="w-full bg-burgundy text-offwhite py-4 text-xs tracking-widest uppercase hover:bg-burgundy-light transition-colors"
+      className="w-full border border-burgundy-vivid text-offwhite py-4 text-xs tracking-[0.12em] uppercase rounded-full hover:bg-burgundy-vivid hover:tracking-[0.16em] transition-all duration-300 ease-out"
     >
       {added ? "Added to Cart \u2713" : "Add to Cart"}
     </button>

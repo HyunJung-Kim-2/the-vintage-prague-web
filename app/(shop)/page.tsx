@@ -33,7 +33,7 @@ export default async function HomePage() {
           </p>
           <Link
             href="/products"
-            className="inline-block border border-offwhite text-offwhite text-xs tracking-widest uppercase px-10 py-4 hover:bg-offwhite hover:text-background transition-colors"
+            className="inline-block border border-offwhite/60 text-offwhite text-xs tracking-[0.12em] uppercase px-10 py-4 rounded-full hover:border-offwhite hover:tracking-[0.16em] transition-all duration-300 ease-out"
           >
             Explore Collection
           </Link>
