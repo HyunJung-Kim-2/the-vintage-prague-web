@@ -25,27 +25,19 @@ export default async function HomePage() {
       <section className="relative h-[85vh] flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-transparent to-background" />
         <div className="relative text-center px-4">
-          <FadeIn delay={0}>
-            <p className="text-xs tracking-[0.4em] uppercase text-muted mb-6">Prague, Czech Republic</p>
-          </FadeIn>
-          <FadeIn delay={0.1}>
-            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-burgundy-vivid mb-8 leading-none tracking-tight">
-              The Vintage<br />Prague
-            </h1>
-          </FadeIn>
-          <FadeIn delay={0.2}>
-            <p className="text-muted text-sm tracking-[0.4em] uppercase mb-10">
-              Curated vintage fashion — each piece, a story
-            </p>
-          </FadeIn>
-          <FadeIn delay={0.3}>
-            <Link
-              href="/products"
-              className="inline-block border border-offwhite/60 text-offwhite text-xs tracking-[0.12em] uppercase px-10 py-4 rounded-full hover:border-offwhite hover:tracking-[0.16em] transition-all duration-300 ease-out"
-            >
-              Explore Collection
-            </Link>
-          </FadeIn>
+          <p className="text-xs tracking-[0.4em] uppercase text-muted mb-6">Prague, Czech Republic</p>
+          <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-burgundy-vivid mb-8 leading-none tracking-tight">
+            The Vintage<br />Prague
+          </h1>
+          <p className="text-muted text-sm tracking-[0.4em] uppercase mb-10">
+            Curated vintage fashion — each piece, a story
+          </p>
+          <Link
+            href="/products"
+            className="inline-block border border-offwhite/60 text-offwhite text-xs tracking-[0.12em] uppercase px-10 py-4 rounded-full hover:border-offwhite hover:tracking-[0.16em] transition-all duration-300 ease-out"
+          >
+            Explore Collection
+          </Link>
         </div>
       </section>
 
