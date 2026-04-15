@@ -3,6 +3,7 @@ import { ShoppingBag, User, Search } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/app/(auth)/login/actions";
 import CartCount from "./CartCount";
+import AnimatedLink from "@/components/ui/AnimatedLink";
 
 export default async function Header() {
   const supabase = await createClient();
@@ -14,15 +15,15 @@ export default async function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Nav left */}
           <nav className="hidden md:flex items-center gap-8">
-            <Link href="/products" className="text-xs tracking-widest uppercase text-muted hover:text-offwhite transition-colors">
+            <AnimatedLink href="/products" className="text-xs tracking-widest uppercase text-muted hover:text-offwhite transition-colors">
               Shop
-            </Link>
-            <Link href="/products?category=bags" className="text-xs tracking-widest uppercase text-muted hover:text-offwhite transition-colors">
+            </AnimatedLink>
+            <AnimatedLink href="/products?category=bags" className="text-xs tracking-widest uppercase text-muted hover:text-offwhite transition-colors">
               Bags
-            </Link>
-            <Link href="/products?category=clothing" className="text-xs tracking-widest uppercase text-muted hover:text-offwhite transition-colors">
+            </AnimatedLink>
+            <AnimatedLink href="/products?category=clothing" className="text-xs tracking-widest uppercase text-muted hover:text-offwhite transition-colors">
               Clothing
-            </Link>
+            </AnimatedLink>
           </nav>
 
           {/* Logo center */}
