@@ -7,7 +7,7 @@ import { useCartStore } from "@/lib/store/cart";
 export function useCartBounce() {
   const controls = useAnimationControls();
   const count = useCartStore((s) => s.items.reduce((acc, i) => acc + i.quantity, 0));
-  const prevCount = useRef(count);
+  const prevCount = useRef(0);
 
   useEffect(() => {
     if (count > prevCount.current) {
@@ -19,5 +19,5 @@ export function useCartBounce() {
     prevCount.current = count;
   }, [count, controls]);
 
-  return controls;
+  return { controls, count };
 }

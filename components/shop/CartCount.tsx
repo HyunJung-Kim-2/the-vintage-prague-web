@@ -1,12 +1,10 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useCartStore } from "@/lib/store/cart";
 import { useCartBounce } from "@/hooks/useCartBounce";
 
 export default function CartCount() {
-  const count = useCartStore((s) => s.items.reduce((acc, i) => acc + i.quantity, 0));
-  const controls = useCartBounce();
+  const { controls, count } = useCartBounce();
 
   if (count === 0) return null;
 

@@ -15,13 +15,15 @@ export default function AnimatedLink({ children, className, ...props }: Animated
       {...props}
       className={twMerge("relative inline-block", className)}
       whileHover="hover"
+      initial="default"
     >
       {children}
       <motion.span
         className="absolute bottom-0 left-0 h-px bg-current"
-        variants={{ hover: { scaleX: 1 } }}
-        initial={{ scaleX: 0 }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+        variants={{
+          hover: { scaleX: 1, transition: { duration: 0.25, ease: [0.22, 1, 0.36, 1] } },
+          default: { scaleX: 0, transition: { duration: 0.2, ease: [0.22, 1, 0.36, 1] } },
+        }}
         style={{ width: "100%", transformOrigin: "left" }}
       />
     </MotionLink>

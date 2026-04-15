@@ -57,8 +57,10 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 <p className="text-muted text-sm leading-relaxed">{product.description}</p>
               </div>
             )}
+          </FadeIn>
 
-            <div className="border-t border-border pt-6 mt-auto">
+          <FadeIn delay={0.2} className="mt-auto">
+            <div className="border-t border-border pt-6">
               <AddToCartButton product={product} />
               <p className="text-center text-xs text-muted mt-4 tracking-widest">
                 {product.stock > 1
