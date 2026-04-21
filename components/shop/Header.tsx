@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { signOut } from "@/app/(auth)/login/actions";
 import CartCount from "./CartCount";
 import AnimatedLink from "@/components/ui/AnimatedLink";
+import HangingSign from "@/components/ui/HangingSign";
 
 export default async function Header() {
   const supabase = await createClient();
@@ -11,7 +12,7 @@ export default async function Header() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex items-center justify-between h-16">
           {/* Nav left */}
           <nav className="hidden md:flex items-center gap-8">
@@ -58,6 +59,7 @@ export default async function Header() {
             </Link>
           </div>
         </div>
+        <HangingSign />
       </div>
     </header>
   );

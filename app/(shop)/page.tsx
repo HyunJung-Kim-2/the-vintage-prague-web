@@ -30,7 +30,10 @@ export default async function HomePage() {
             The Vintage<br />Prague
           </h1>
           <p className="text-muted text-sm tracking-[0.4em] uppercase mb-10">
-            Curated vintage fashion — each piece, a story
+            Curated in Japan &amp; Asia — brought to Prague
+          </p>
+          <p className="text-muted text-[11px] tracking-[0.3em] uppercase mb-6">
+            Truhlářská 1110/4, Prague 1
           </p>
           <Link
             href="/products"

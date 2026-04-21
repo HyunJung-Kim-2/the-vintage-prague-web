@@ -2,8 +2,15 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import ImageCarousel from "@/components/shop/ImageCarousel";
 import AddToCartButton from "@/components/shop/AddToCartButton";
-import { formatPrice, categoryLabel } from "@/lib/utils";
+import { formatPrice, categoryLabel, conditionLabel } from "@/lib/utils";
 import FadeIn from "@/components/ui/FadeIn";
+
+const conditionDesc: Record<string, string> = {
+  new:  "Brand new, never worn, with or without tags.",
+  s:    "Like new. Minimal to no signs of use.",
+  a:    "Gently used. Light wear, no notable flaws.",
+  b:    "Visible signs of wear. Minor flaws noted in description.",
+};
 
 export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -45,15 +52,31 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
           </FadeIn>
 
           <FadeIn delay={0.2}>
-            <div className="flex gap-6 text-sm">
+            <div className="flex flex-wrap gap-x-8 gap-y-4 text-sm">
               <div>
                 <p className="text-xs tracking-widest uppercase text-muted mb-1">Category</p>
                 <p className="text-offwhite">{categoryLabel(product.category)}</p>
               </div>
+              {product.size && (
+                <div>
+                  <p className="text-xs tracking-widest uppercase text-muted mb-1">Size</p>
+                  <p className="text-offwhite">{product.size}</p>
+                </div>
+              )}
+              <div>
+                <p className="text-xs tracking-widest uppercase text-muted mb-1">Condition</p>
+                <p className="text-offwhite">{conditionLabel(product.condition)}</p>
+              </div>
             </div>
 
+            {product.condition && (
+              <p className="text-xs text-muted leading-relaxed mt-3">
+                {conditionDesc[product.condition]}
+              </p>
+            )}
+
             {product.description && (
-              <div className="border-t border-border pt-6">
+              <div className="border-t border-border pt-6 mt-2">
                 <p className="text-muted text-sm leading-relaxed">{product.description}</p>
               </div>
             )}

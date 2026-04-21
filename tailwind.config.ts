@@ -13,7 +13,7 @@ const config: Config = {
         burgundy: {
           DEFAULT: "#6D1A2A",
           light: "#8B2235",
-          vivid: "#9B1535",
+          vivid: "#C4243E",
           dark: "#4F1220",
         },
         offwhite: "#F0EDE8",
@@ -22,8 +22,8 @@ const config: Config = {
         surface: "#111111",
       },
       fontFamily: {
-        serif: ["Cormorant Garant", "Georgia", "serif"],
-        sans: ["Inter", "system-ui", "sans-serif"],
+        serif: ["var(--font-serif)", "Georgia", "serif"],
+        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
       },
     },
   },

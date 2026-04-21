@@ -25,7 +25,14 @@ export async function updateSession(request: NextRequest) {
     }
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  // Timeout after 3s to prevent middleware from hanging on slow/unreachable Supabase
+  const userResult = await Promise.race([
+    supabase.auth.getUser(),
+    new Promise<{ data: { user: null } }>((resolve) =>
+      setTimeout(() => resolve({ data: { user: null } }), 3000)
+    ),
+  ]);
+  const { data: { user } } = userResult;
 
   return { supabaseResponse, user, supabase };
 }

@@ -64,6 +64,20 @@ export async function POST(req: NextRequest) {
           product_id: item.id,
           qty: item.qty,
         });
+
+        // Auto-deactivate when stock hits 0 (vintage shop: one item = sold out)
+        const { data: product } = await supabaseAdmin
+          .from("products")
+          .select("stock")
+          .eq("id", item.id)
+          .single();
+
+        if (product && product.stock === 0) {
+          await supabaseAdmin
+            .from("products")
+            .update({ is_active: false })
+            .eq("id", item.id);
+        }
       }
     }
   }

@@ -13,6 +13,18 @@ export async function POST(req: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
 
+  // Fetch user's default saved address if logged in
+  let defaultAddress = null;
+  if (user) {
+    const { data: addr } = await supabase
+      .from("addresses")
+      .select("*")
+      .eq("user_id", user.id)
+      .eq("is_default", true)
+      .single();
+    defaultAddress = addr;
+  }
+
   const lineItems = items.map(({ product, quantity }) => ({
     price_data: {
       currency: "eur",
@@ -49,6 +61,25 @@ export async function POST(req: NextRequest) {
         "CZ", "SK", "DE", "AT", "PL", "HU", "FR", "IT", "ES", "GB", "NL", "BE",
       ],
     },
+    // Pre-fill shipping address from saved default
+    ...(defaultAddress && {
+      shipping_options: undefined,
+      customer_creation: "always" as const,
+    }),
+    ...(defaultAddress && {
+      payment_intent_data: {
+        shipping: {
+          name: defaultAddress.full_name,
+          address: {
+            line1: defaultAddress.line1,
+            line2: defaultAddress.line2 ?? undefined,
+            city: defaultAddress.city,
+            postal_code: defaultAddress.postal_code,
+            country: defaultAddress.country,
+          },
+        },
+      },
+    }),
   });
 
   return NextResponse.json({ url: session.url });
