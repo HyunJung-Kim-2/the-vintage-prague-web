@@ -5,20 +5,31 @@ import type { Product } from "@/types/database";
 
 export default function ProductCard({ product }: { product: Product }) {
   const firstImage = product.product_images?.[0]?.url;
+  const secondImage = product.product_images?.[1]?.url;
   const soldOut = product.stock === 0;
 
   return (
     <Link href={`/products/${product.slug}`} className="group block">
       <div className="relative aspect-[3/4] bg-surface overflow-hidden mb-3">
         {firstImage ? (
-          <Image
-            src={firstImage}
-            alt={product.name}
-            fill
-            className={`object-cover transition-transform duration-500 ${
-              soldOut ? "opacity-50" : "group-hover:scale-105"
-            }`}
-          />
+          <>
+            <Image
+              src={firstImage}
+              alt={product.name}
+              fill
+              className={`object-cover transition-all duration-500 ${
+                soldOut ? "opacity-50" : secondImage ? "group-hover:opacity-0" : "group-hover:scale-105"
+              }`}
+            />
+            {secondImage && !soldOut && (
+              <Image
+                src={secondImage}
+                alt={product.name}
+                fill
+                className="object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+              />
+            )}
+          </>
         ) : (
           <div className="absolute inset-0 flex items-center justify-center text-muted text-xs tracking-widest uppercase">
             No Image

@@ -2,6 +2,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import ProductCard from "@/components/shop/ProductCard";
 import FadeIn from "@/components/ui/FadeIn";
+import Marquee from "@/components/ui/Marquee";
 
 const categories = [
   { name: "Bags", slug: "bags", description: "Timeless carriers" },
@@ -43,6 +44,8 @@ export default async function HomePage() {
           </Link>
         </div>
       </section>
+
+      <Marquee />
 
       {/* Categories */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">

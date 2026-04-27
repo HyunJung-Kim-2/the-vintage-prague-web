@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
+import CustomCursor from "@/components/ui/CustomCursor";
 import "./globals.css";
 
 const serif = Cormorant_Garamond({
@@ -33,6 +34,7 @@ export default function RootLayout({
       <body className="min-h-screen bg-background text-offwhite antialiased">
         {children}
         <Analytics />
+        <CustomCursor />
       </body>
     </html>
   );
