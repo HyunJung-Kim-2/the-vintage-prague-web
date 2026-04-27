@@ -107,9 +107,14 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-border mt-12 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-muted text-xs tracking-widest">
-            &copy; {new Date().getFullYear()} The Vintage Prague. All rights reserved.
-          </p>
+          <div className="flex items-center gap-6">
+            <p className="text-muted text-xs tracking-widest">
+              &copy; {new Date().getFullYear()} The Vintage Prague. All rights reserved.
+            </p>
+            <Link href="/privacy" className="text-muted text-xs hover:text-offwhite transition-colors">
+              Privacy Policy
+            </Link>
+          </div>
           <a
             href="https://www.instagram.com/thevintageprague/"
             target="_blank"

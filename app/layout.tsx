@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const serif = Cormorant_Garamond({
@@ -31,6 +32,7 @@ export default function RootLayout({
     <html lang="en" className={`${serif.variable} ${sans.variable}`}>
       <body className="min-h-screen bg-background text-offwhite antialiased">
         {children}
+        <Analytics />
       </body>
     </html>
   );

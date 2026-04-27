@@ -1,7 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { createClient as createSupabaseAdmin } from "@supabase/supabase-js";
+import { Resend } from "resend";
 import type Stripe from "stripe";
+
+const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 
 const supabaseAdmin = createSupabaseAdmin(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -58,6 +61,37 @@ export async function POST(req: NextRequest) {
           price_at_purchase: item.price,
         }))
       );
+
+      // Send order confirmation email
+      const customerEmail = session.customer_details?.email ?? session.customer_email;
+      if (resend && customerEmail) {
+        const itemsHtml = itemsRaw
+          .map((i) => `<tr><td style="padding:4px 0;color:#a0a0a0;">Item</td><td style="padding:4px 0;color:#f0f0f0;text-align:right;">€${i.price.toFixed(2)}</td></tr>`)
+          .join("");
+        const total = ((session.amount_total ?? 0) / 100).toFixed(2);
+        const orderId = order.id.slice(0, 8).toUpperCase();
+
+        await resend.emails.send({
+          from: "The Vintage Prague <orders@thevintageprague.com>",
+          to: customerEmail,
+          subject: `Order confirmed — #${orderId}`,
+          html: `
+            <div style="background:#0f0f0f;color:#f0f0f0;font-family:Georgia,serif;max-width:560px;margin:0 auto;padding:48px 32px;">
+              <p style="font-size:11px;letter-spacing:0.4em;text-transform:uppercase;color:#666;margin:0 0 24px;">The Vintage Prague</p>
+              <h1 style="font-size:28px;font-weight:400;margin:0 0 8px;">Order Confirmed</h1>
+              <p style="color:#888;font-size:13px;margin:0 0 32px;">Thank you for your purchase.</p>
+              <table style="width:100%;border-collapse:collapse;font-size:13px;margin-bottom:24px;">
+                ${itemsHtml}
+                <tr style="border-top:1px solid #333;">
+                  <td style="padding:12px 0 4px;color:#a0a0a0;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;">Total</td>
+                  <td style="padding:12px 0 4px;color:#f0f0f0;text-align:right;">€${total}</td>
+                </tr>
+              </table>
+              <p style="color:#666;font-size:11px;margin:32px 0 0;">Order #${orderId} · Truhlářská 1110/4, Prague 1</p>
+            </div>
+          `,
+        });
+      }
 
       for (const item of itemsRaw) {
         await supabaseAdmin.rpc("decrement_stock", {

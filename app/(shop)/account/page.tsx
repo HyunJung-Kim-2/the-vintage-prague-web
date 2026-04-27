@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import AddressManager from "@/components/shop/AddressManager";
+import PasswordChangeForm from "@/components/shop/PasswordChangeForm";
 
 export default async function AccountPage() {
   const supabase = await createClient();
@@ -21,6 +22,7 @@ export default async function AccountPage() {
         <h2 className="font-serif text-xl text-offwhite mb-6">Saved Addresses</h2>
         <AddressManager initialAddresses={addresses ?? []} userId={user!.id} />
       </div>
+      <PasswordChangeForm />
     </div>
   );
 }
