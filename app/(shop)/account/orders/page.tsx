@@ -45,6 +45,12 @@ export default async function OrdersPage() {
                   </li>
                 ))}
               </ul>
+              {order.tracking_number && (
+                <div className="mt-4 pt-4 border-t border-border">
+                  <p className="text-xs tracking-widest uppercase text-muted mb-1">Tracking</p>
+                  <p className="text-offwhite text-sm font-mono">{order.tracking_number}</p>
+                </div>
+              )}
             </div>
           ))}
         </div>

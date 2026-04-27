@@ -8,6 +8,7 @@ import { Plus, Trash2 } from "lucide-react";
 const BLANK_FORM = {
   label: "",
   full_name: "",
+  phone: "",
   line1: "",
   line2: "",
   city: "",
@@ -77,6 +78,7 @@ export default function AddressManager({
             <div>
               <p className="text-offwhite text-sm">{addr.full_name}</p>
               <p className="text-muted text-xs mt-1">{addr.line1}{addr.line2 ? `, ${addr.line2}` : ""}, {addr.city} {addr.postal_code}, {addr.country}</p>
+              {(addr as Address & { phone?: string }).phone && <p className="text-muted text-xs mt-0.5">{(addr as Address & { phone?: string }).phone}</p>}
               {addr.label && <p className="text-xs text-muted mt-1 uppercase tracking-widest">{addr.label}</p>}
               {addr.is_default && (
                 <span className="mt-2 inline-block text-xs tracking-widest uppercase border border-burgundy text-burgundy px-2 py-0.5">Default</span>
@@ -118,6 +120,10 @@ export default function AddressManager({
             <div>
               <label className={labelClass}>Full Name *</label>
               <input name="full_name" value={form.full_name} onChange={handleChange} required className={inputClass} />
+            </div>
+            <div>
+              <label className={labelClass}>Phone</label>
+              <input name="phone" value={form.phone} onChange={handleChange} type="tel" className={inputClass} />
             </div>
             <div className="sm:col-span-2">
               <label className={labelClass}>Address Line 1 *</label>

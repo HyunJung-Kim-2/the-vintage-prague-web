@@ -58,6 +58,7 @@ export interface Order {
   total_amount: number;
   currency: Currency;
   shipping_address: ShippingAddress | null;
+  tracking_number: string | null;
   created_at: string;
   order_items?: OrderItem[];
 }

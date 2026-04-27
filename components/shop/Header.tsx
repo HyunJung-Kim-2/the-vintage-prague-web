@@ -5,6 +5,7 @@ import { signOut } from "@/app/(auth)/login/actions";
 import CartCount from "./CartCount";
 import AnimatedLink from "@/components/ui/AnimatedLink";
 import HangingSign from "@/components/ui/HangingSign";
+import MobileMenu from "./MobileMenu";
 
 export default async function Header() {
   const supabase = await createClient();
@@ -34,6 +35,7 @@ export default async function Header() {
 
           {/* Icons right */}
           <div className="flex items-center gap-4 ml-auto">
+            <MobileMenu isLoggedIn={!!user} />
             <Link href="/products" className="text-muted hover:text-offwhite transition-colors">
               <Search size={18} />
             </Link>

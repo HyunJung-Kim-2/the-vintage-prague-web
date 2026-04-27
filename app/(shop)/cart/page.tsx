@@ -4,7 +4,7 @@ import { useCartStore } from "@/lib/store/cart";
 import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, X } from "lucide-react";
-import { formatPrice } from "@/lib/utils";
+import { formatPrice, conditionLabel } from "@/lib/utils";
 import { useState } from "react";
 
 export default function CartPage() {
@@ -57,6 +57,11 @@ export default function CartPage() {
             <div className="flex-1 min-w-0">
               <p className="text-xs text-muted tracking-widest uppercase mb-1">{product.brand}</p>
               <p className="text-offwhite font-serif">{product.name}</p>
+              <div className="flex gap-3 mt-1 text-xs text-muted">
+                {product.size && <span>{product.size}</span>}
+                {product.size && product.condition && <span>·</span>}
+                {product.condition && <span>{conditionLabel(product.condition)}</span>}
+              </div>
               <p className="text-offwhite text-sm mt-1">{formatPrice(product.price)}</p>
 
               <div className="flex items-center gap-3 mt-3">

@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { formatPrice } from "@/lib/utils";
 import OrderStatusUpdater from "@/components/admin/OrderStatusUpdater";
+import TrackingUpdater from "@/components/admin/TrackingUpdater";
 
 export default async function AdminOrdersPage() {
   const supabase = await createClient();
@@ -38,9 +39,13 @@ export default async function AdminOrdersPage() {
             {order.shipping_address && (
               <div className="mt-4 pt-4 border-t border-border text-xs text-muted">
                 <p className="uppercase tracking-widest mb-1">Ship to</p>
-                <p>{JSON.stringify(order.shipping_address)}</p>
+                {(() => {
+                  const a = order.shipping_address as { full_name?: string; line1?: string; line2?: string; city?: string; postal_code?: string; country?: string };
+                  return <p>{[a.full_name, a.line1, a.line2, a.city, a.postal_code, a.country].filter(Boolean).join(", ")}</p>;
+                })()}
               </div>
             )}
+            <TrackingUpdater orderId={order.id} currentTracking={order.tracking_number ?? null} />
           </div>
         ))}
       </div>
