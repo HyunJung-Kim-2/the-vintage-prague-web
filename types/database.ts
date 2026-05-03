@@ -1,8 +1,17 @@
 export type Role = "admin" | "customer";
 export type Category = "bags" | "clothing" | "shoes" | "wallets";
 export type Condition = "new" | "s" | "a" | "b";
+export type Gender = "unisex" | "men" | "women";
 export type OrderStatus = "pending" | "paid" | "shipped" | "delivered" | "cancelled";
 export type Currency = "EUR" | "CZK";
+
+export interface Measurements {
+  shoulder?: string;
+  chest?: string;
+  waist?: string;
+  length?: string;
+  hips?: string;
+}
 
 export interface Profile {
   id: string;
@@ -22,6 +31,9 @@ export interface Product {
   condition: Condition;
   price: number;
   size: string | null;
+  gender: Gender;
+  color: string | null;
+  measurements: Measurements | null;
   stock: number;
   is_active: boolean;
   created_at: string;

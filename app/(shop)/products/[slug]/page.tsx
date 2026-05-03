@@ -68,6 +68,18 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                   <p className="text-offwhite">{product.size}</p>
                 </div>
               )}
+              {product.color && (
+                <div>
+                  <p className="text-xs tracking-widest uppercase text-muted mb-1">Color</p>
+                  <p className="text-offwhite">{product.color}</p>
+                </div>
+              )}
+              {product.gender && product.gender !== "unisex" && (
+                <div>
+                  <p className="text-xs tracking-widest uppercase text-muted mb-1">Gender</p>
+                  <p className="text-offwhite capitalize">{product.gender}</p>
+                </div>
+              )}
               <div>
                 <p className="text-xs tracking-widest uppercase text-muted mb-1">Condition</p>
                 <p className="text-offwhite">{conditionLabel(product.condition)}</p>
@@ -80,8 +92,24 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               </p>
             )}
 
+            {product.measurements && Object.keys(product.measurements).length > 0 && (
+              <div className="border-t border-border pt-6 mt-4">
+                <p className="text-xs tracking-widest uppercase text-muted mb-3">Measurements (cm)</p>
+                <div className="flex flex-wrap gap-x-6 gap-y-2">
+                  {(["shoulder", "chest", "waist", "hips", "length"] as const).map((key) =>
+                    product.measurements?.[key] ? (
+                      <div key={key}>
+                        <p className="text-[10px] tracking-widest uppercase text-muted">{key}</p>
+                        <p className="text-offwhite text-sm">{product.measurements[key]}</p>
+                      </div>
+                    ) : null
+                  )}
+                </div>
+              </div>
+            )}
+
             {product.description && (
-              <div className="border-t border-border pt-6 mt-2">
+              <div className="border-t border-border pt-6 mt-4">
                 <p className="text-muted text-sm leading-relaxed">{product.description}</p>
               </div>
             )}
