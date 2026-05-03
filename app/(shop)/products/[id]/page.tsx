@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import ImageCarousel from "@/components/shop/ImageCarousel";
 import AddToCartButton from "@/components/shop/AddToCartButton";
@@ -12,14 +13,14 @@ const conditionDesc: Record<string, string> = {
   b:    "Visible signs of wear. Minor flaws noted in description.",
 };
 
-export default async function ProductPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const supabase = await createClient();
 
   const { data: product } = await supabase
     .from("products")
     .select("*, product_images(*)")
-    .eq("slug", slug)
+    .eq("id", id)
     .eq("is_active", true)
     .single();
 
@@ -32,9 +33,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div className="mb-8">
-        <a href="/products" className="text-xs tracking-widest uppercase text-muted hover:text-offwhite transition-colors">
+        <Link href="/products" className="text-xs tracking-widest uppercase text-muted hover:text-offwhite transition-colors">
           ← All Pieces
-        </a>
+        </Link>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
         {/* Images */}

@@ -4,10 +4,14 @@ import { categoryLabel } from "@/lib/utils";
 import FadeIn from "@/components/ui/FadeIn";
 
 const CATEGORIES = ["bags", "clothing", "shoes", "wallets"] as const;
+const GENDERS = [
+  { value: "men", label: "Men" },
+  { value: "women", label: "Women" },
+] as const;
 const SORT_OPTIONS = [
   { value: "newest", label: "Newest" },
-  { value: "price_asc", label: "Price: Low to High" },
-  { value: "price_desc", label: "Price: High to Low" },
+  { value: "price_asc", label: "Price: Low → High" },
+  { value: "price_desc", label: "Price: High → Low" },
 ] as const;
 
 interface SearchParams {
@@ -15,6 +19,7 @@ interface SearchParams {
   q?: string;
   size?: string;
   sort?: string;
+  gender?: string;
 }
 
 export default async function ProductsPage({
@@ -27,6 +32,7 @@ export default async function ProductsPage({
 
   const sort = params.sort ?? "newest";
 
+  // Build query — fetch ALL active products for size options, then filter
   let query = supabase
     .from("products")
     .select("*, product_images(*)")
@@ -44,18 +50,24 @@ export default async function ProductsPage({
     query = query.eq("category", params.category);
   }
 
+  if (params.gender && ["men", "women"].includes(params.gender)) {
+    // Show gender-specific + unisex items
+    query = query.in("gender", [params.gender, "unisex"]);
+  }
+
   if (params.q) {
     query = query.or(`name.ilike.%${params.q}%,brand.ilike.%${params.q}%`);
   }
 
-  if (params.size) {
-    query = query.ilike("size", params.size);
-  }
+  const { data: allProducts } = await query;
 
-  const { data: products } = await query;
+  // Collect ALL sizes before filtering by size (so size options don't disappear)
+  const allSizes = [...new Set((allProducts ?? []).map((p) => p.size).filter(Boolean))].sort();
 
-  // Collect available sizes for filter
-  const allSizes = [...new Set((products ?? []).map((p) => p.size).filter(Boolean))].sort();
+  // Apply size filter after collecting options
+  const products = params.size
+    ? (allProducts ?? []).filter((p) => p.size?.toLowerCase() === params.size!.toLowerCase())
+    : allProducts;
 
   function buildUrl(overrides: Partial<SearchParams>) {
     const merged = { ...params, ...overrides };
@@ -63,6 +75,7 @@ export default async function ProductsPage({
     if (merged.category) qs.set("category", merged.category);
     if (merged.q) qs.set("q", merged.q);
     if (merged.size) qs.set("size", merged.size);
+    if (merged.gender) qs.set("gender", merged.gender);
     if (merged.sort && merged.sort !== "newest") qs.set("sort", merged.sort);
     const str = qs.toString();
     return `/products${str ? `?${str}` : ""}`;
@@ -81,17 +94,24 @@ export default async function ProductsPage({
 
         {/* Search + Sort row */}
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
-          <form method="GET" className="flex-1 max-w-md">
+          <form method="GET" className="flex-1 max-w-md flex">
             {params.category && <input type="hidden" name="category" value={params.category} />}
             {params.size && <input type="hidden" name="size" value={params.size} />}
             {params.sort && <input type="hidden" name="sort" value={params.sort} />}
+            {params.gender && <input type="hidden" name="gender" value={params.gender} />}
             <input
               name="q"
               type="text"
               defaultValue={params.q}
               placeholder="Search by name or brand..."
-              className="w-full bg-surface border border-border text-offwhite px-4 py-2 text-sm focus:outline-none focus:border-burgundy placeholder:text-muted"
+              className="flex-1 bg-surface border border-border text-offwhite px-4 py-2 text-sm focus:outline-none focus:border-burgundy placeholder:text-muted"
             />
+            <button
+              type="submit"
+              className="bg-surface border border-border border-l-0 px-4 py-2 text-muted hover:text-offwhite hover:border-burgundy transition-colors text-xs tracking-widest uppercase"
+            >
+              Search
+            </button>
           </form>
 
           {/* Sort */}
@@ -112,12 +132,12 @@ export default async function ProductsPage({
           </div>
         </div>
 
-        {/* Category + Size filters */}
+        {/* Category + Gender + Size filters */}
         <div className="flex flex-col gap-3 mb-10">
           {/* Category tabs */}
           <div className="flex gap-2 flex-wrap">
             <a
-              href={buildUrl({ category: undefined, size: params.size })}
+              href={buildUrl({ category: undefined })}
               className={`text-xs tracking-widest uppercase px-4 py-2 border transition-colors ${
                 !params.category
                   ? "border-offwhite text-offwhite"
@@ -129,7 +149,7 @@ export default async function ProductsPage({
             {CATEGORIES.map((cat) => (
               <a
                 key={cat}
-                href={buildUrl({ category: cat, size: params.size })}
+                href={buildUrl({ category: cat })}
                 className={`text-xs tracking-widest uppercase px-4 py-2 border transition-colors ${
                   params.category === cat
                     ? "border-offwhite text-offwhite"
@@ -141,7 +161,35 @@ export default async function ProductsPage({
             ))}
           </div>
 
-          {/* Size filter */}
+          {/* Gender filter */}
+          <div className="flex gap-2 flex-wrap items-center">
+            <span className="text-xs tracking-widest uppercase text-muted mr-1">Gender</span>
+            <a
+              href={buildUrl({ gender: undefined })}
+              className={`text-xs tracking-widest uppercase px-3 py-1.5 border transition-colors ${
+                !params.gender
+                  ? "border-offwhite text-offwhite"
+                  : "border-border text-muted hover:border-offwhite hover:text-offwhite"
+              }`}
+            >
+              All
+            </a>
+            {GENDERS.map((g) => (
+              <a
+                key={g.value}
+                href={buildUrl({ gender: g.value })}
+                className={`text-xs tracking-widest uppercase px-3 py-1.5 border transition-colors ${
+                  params.gender === g.value
+                    ? "border-offwhite text-offwhite"
+                    : "border-border text-muted hover:border-offwhite hover:text-offwhite"
+                }`}
+              >
+                {g.label}
+              </a>
+            ))}
+          </div>
+
+          {/* Size filter — always shows all available sizes */}
           {allSizes.length > 0 && (
             <div className="flex gap-2 flex-wrap items-center">
               <span className="text-xs tracking-widest uppercase text-muted mr-1">Size</span>
@@ -156,7 +204,7 @@ export default async function ProductsPage({
               {allSizes.filter((s) => s !== params.size).map((size) => (
                 <a
                   key={size}
-                  href={buildUrl({ size })}
+                  href={buildUrl({ size: size! })}
                   className="text-xs tracking-widest uppercase px-3 py-1.5 border border-border text-muted hover:border-offwhite hover:text-offwhite transition-colors"
                 >
                   {size}

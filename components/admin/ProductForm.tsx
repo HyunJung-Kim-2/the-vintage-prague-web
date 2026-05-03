@@ -13,10 +13,6 @@ const GENDERS = [
   { value: "women",  label: "Women" },
 ] as const;
 
-function slugify(text: string) {
-  return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
-}
-
 export default function ProductForm({ product }: { product?: Product }) {
   const router = useRouter();
   const supabase = createClient();
@@ -24,7 +20,6 @@ export default function ProductForm({ product }: { product?: Product }) {
 
   const [form, setForm] = useState({
     name:        product?.name ?? "",
-    slug:        product?.slug ?? "",
     description: product?.description ?? "",
     brand:       product?.brand ?? "",
     category:    product?.category ?? "bags",
@@ -44,7 +39,6 @@ export default function ProductForm({ product }: { product?: Product }) {
     setForm((f) => ({
       ...f,
       [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
-      ...(name === "name" && !isEdit ? { slug: slugify(value) } : {}),
     }));
   }
 
@@ -56,7 +50,6 @@ export default function ProductForm({ product }: { product?: Product }) {
     const payload = {
       id:          productId,
       name:        form.name,
-      slug:        form.slug,
       description: form.description || null,
       brand:       form.brand || null,
       category:    form.category,

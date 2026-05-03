@@ -9,7 +9,7 @@ export default function ProductCard({ product }: { product: Product }) {
   const soldOut = product.stock === 0;
 
   return (
-    <Link href={`/products/${product.slug}`} className="group block">
+    <Link href={`/products/${product.id}`} className="group block">
       <div className="relative aspect-[3/4] bg-surface overflow-hidden mb-3">
         {firstImage ? (
           <>

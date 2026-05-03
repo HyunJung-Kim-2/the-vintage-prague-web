@@ -26,6 +26,12 @@ export default async function Header() {
             <AnimatedLink href="/products?category=clothing" className="text-xs tracking-widest uppercase text-muted hover:text-offwhite transition-colors">
               Clothing
             </AnimatedLink>
+            <AnimatedLink href="/products?category=shoes" className="text-xs tracking-widest uppercase text-muted hover:text-offwhite transition-colors">
+              Shoes
+            </AnimatedLink>
+            <AnimatedLink href="/products?category=wallets" className="text-xs tracking-widest uppercase text-muted hover:text-offwhite transition-colors">
+              Wallets
+            </AnimatedLink>
           </nav>
 
           {/* Logo center */}

@@ -5,11 +5,53 @@ import Image from "next/image";
 import Link from "next/link";
 import { Minus, Plus, X } from "lucide-react";
 import { formatPrice, conditionLabel } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, total } = useCartStore();
+  const { items, removeItem, updateQuantity, total, syncItem } = useCartStore();
   const [loading, setLoading] = useState(false);
+  const [syncing, setSyncing] = useState(true);
+  const [warnings, setWarnings] = useState<string[]>([]);
+
+  // Validate cart items against live DB data on mount
+  useEffect(() => {
+    async function validateCart() {
+      if (items.length === 0) { setSyncing(false); return; }
+      const supabase = createClient();
+      const ids = items.map((i) => i.product.id);
+      const { data: liveProducts } = await supabase
+        .from("products")
+        .select("*, product_images(*)")
+        .in("id", ids);
+
+      const newWarnings: string[] = [];
+
+      for (const item of items) {
+        const live = liveProducts?.find((p) => p.id === item.product.id);
+        if (!live || !live.is_active) {
+          newWarnings.push(`"${item.product.name}" is no longer available and was removed.`);
+          removeItem(item.product.id);
+        } else if (live.stock === 0) {
+          newWarnings.push(`"${item.product.name}" is sold out and was removed.`);
+          removeItem(item.product.id);
+        } else {
+          // Sync price, stock, images etc.
+          if (live.price !== item.product.price || live.stock !== item.product.stock || live.name !== item.product.name) {
+            syncItem(item.product.id, live);
+          }
+          if (item.quantity > live.stock) {
+            newWarnings.push(`"${live.name}" quantity adjusted to ${live.stock} (max available).`);
+            updateQuantity(item.product.id, live.stock);
+          }
+        }
+      }
+      setWarnings(newWarnings);
+      setSyncing(false);
+    }
+    validateCart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   async function handleCheckout() {
     setLoading(true);
@@ -26,10 +68,25 @@ export default function CartPage() {
     }
   }
 
+  if (syncing) {
+    return (
+      <div className="max-w-2xl mx-auto px-4 py-24 text-center">
+        <p className="text-muted text-sm tracking-widest uppercase">Updating cart...</p>
+      </div>
+    );
+  }
+
   if (items.length === 0) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-24 text-center">
         <p className="font-serif text-3xl text-offwhite mb-4">Your cart is empty</p>
+        {warnings.length > 0 && (
+          <div className="mb-6 space-y-1">
+            {warnings.map((w, i) => (
+              <p key={i} className="text-xs text-red-400">{w}</p>
+            ))}
+          </div>
+        )}
         <Link href="/products" className="text-xs tracking-widest uppercase text-muted hover:text-offwhite transition-colors">
           Continue Shopping &rarr;
         </Link>
@@ -40,6 +97,14 @@ export default function CartPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <h1 className="font-serif text-3xl text-offwhite mb-10">Shopping Cart</h1>
+
+      {warnings.length > 0 && (
+        <div className="mb-6 border border-red-800 bg-red-950/30 p-4 space-y-1">
+          {warnings.map((w, i) => (
+            <p key={i} className="text-xs text-red-400">{w}</p>
+          ))}
+        </div>
+      )}
 
       <div className="space-y-6">
         {items.map(({ product, quantity }) => (
