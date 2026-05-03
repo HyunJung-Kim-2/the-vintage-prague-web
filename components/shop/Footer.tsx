@@ -93,6 +93,14 @@ export default function Footer() {
               </li>
               <li>
                 <a
+                  href="mailto:thevintageprague@gmail.com"
+                  className="text-muted text-sm hover:text-offwhite transition-colors"
+                >
+                  thevintageprague@gmail.com
+                </a>
+              </li>
+              <li>
+                <a
                   href="https://www.instagram.com/thevintageprague/"
                   target="_blank"
                   rel="noopener noreferrer"

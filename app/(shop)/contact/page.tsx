@@ -30,6 +30,16 @@ export default function ContactPage() {
               +420 777 216 736
             </a>
           </div>
+
+          <div className="border-t border-border pt-8">
+            <p className="text-xs tracking-[0.3em] uppercase text-muted mb-4">Email</p>
+            <a
+              href="mailto:thevintageprague@gmail.com"
+              className="font-serif text-xl text-offwhite hover:text-burgundy-vivid transition-colors duration-200"
+            >
+              thevintageprague@gmail.com
+            </a>
+          </div>
         </div>
 
       </div>

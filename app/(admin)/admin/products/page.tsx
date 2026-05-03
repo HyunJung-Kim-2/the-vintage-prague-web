@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { formatPrice, categoryLabel } from "@/lib/utils";
 import { Plus } from "lucide-react";
@@ -26,8 +27,18 @@ export default async function AdminProductsPage() {
       {/* Mobile: cards */}
       <div className="md:hidden space-y-3">
         {products?.map((product) => (
-          <Link key={product.id} href={`/admin/products/${product.id}`} className="block border border-border p-4">
-            <div className="flex items-center justify-between">
+          <Link key={product.id} href={`/admin/products/${product.id}`} className="flex gap-3 border border-border p-4">
+            {(() => {
+              const thumb = product.product_images?.sort((a: { position: number }, b: { position: number }) => a.position - b.position)[0];
+              return thumb ? (
+                <div className="relative w-12 h-12 bg-surface flex-shrink-0 overflow-hidden">
+                  <Image src={thumb.url} alt="" fill className="object-cover" />
+                </div>
+              ) : (
+                <div className="w-12 h-12 bg-surface flex-shrink-0 flex items-center justify-center text-muted text-[8px]">—</div>
+              );
+            })()}
+            <div className="flex items-center justify-between flex-1 min-w-0">
               <div>
                 <p className="text-offwhite text-sm">{product.name}</p>
                 <p className="text-muted text-xs mt-1">{categoryLabel(product.category)}</p>
@@ -48,6 +59,7 @@ export default async function AdminProductsPage() {
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-border text-left">
+              <th className="text-xs tracking-widest uppercase text-muted pb-3 pr-4 w-12"></th>
               <th className="text-xs tracking-widest uppercase text-muted pb-3 pr-4">Name</th>
               <th className="text-xs tracking-widest uppercase text-muted pb-3 pr-4">Category</th>
               <th className="text-xs tracking-widest uppercase text-muted pb-3 pr-4">Price</th>
@@ -58,6 +70,18 @@ export default async function AdminProductsPage() {
           <tbody className="divide-y divide-border">
             {products?.map((product) => (
               <tr key={product.id} className="hover:bg-surface transition-colors">
+                <td className="py-3 pr-4">
+                  {(() => {
+                    const thumb = product.product_images?.sort((a: { position: number }, b: { position: number }) => a.position - b.position)[0];
+                    return thumb ? (
+                      <div className="relative w-10 h-10 bg-surface overflow-hidden">
+                        <Image src={thumb.url} alt="" fill className="object-cover" />
+                      </div>
+                    ) : (
+                      <div className="w-10 h-10 bg-surface flex items-center justify-center text-muted text-[8px]">—</div>
+                    );
+                  })()}
+                </td>
                 <td className="py-3 pr-4">
                   <Link href={`/admin/products/${product.id}`} className="text-offwhite hover:text-burgundy transition-colors">
                     {product.name}

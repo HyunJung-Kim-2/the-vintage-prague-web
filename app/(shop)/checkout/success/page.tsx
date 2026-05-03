@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import { useCartStore } from "@/lib/store/cart";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 
-export default function CheckoutSuccessPage() {
+function SuccessContent() {
   const clearCart = useCartStore((s) => s.clearCart);
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get("session_id");
 
   useEffect(() => {
     clearCart();
@@ -16,9 +19,14 @@ export default function CheckoutSuccessPage() {
       <div className="text-center max-w-md">
         <p className="text-burgundy text-4xl mb-6">&check;</p>
         <h1 className="font-serif text-3xl text-offwhite mb-4">Order Confirmed</h1>
-        <p className="text-muted mb-8 leading-relaxed">
+        <p className="text-muted mb-2 leading-relaxed">
           Thank you for your purchase. You&apos;ll receive a confirmation email shortly.
         </p>
+        {sessionId && (
+          <p className="text-xs text-muted font-mono mb-8">
+            Reference: {sessionId.slice(-12).toUpperCase()}
+          </p>
+        )}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
             href="/account/orders"
@@ -35,5 +43,13 @@ export default function CheckoutSuccessPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function CheckoutSuccessPage() {
+  return (
+    <Suspense>
+      <SuccessContent />
+    </Suspense>
   );
 }

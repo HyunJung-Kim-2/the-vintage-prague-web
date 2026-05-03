@@ -13,6 +13,15 @@ export default function CartPage() {
   const [loading, setLoading] = useState(false);
   const [syncing, setSyncing] = useState(true);
   const [warnings, setWarnings] = useState<string[]>([]);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
+
+  // Check auth state
+  useEffect(() => {
+    const supabase = createClient();
+    supabase.auth.getUser().then(({ data }) => {
+      setIsLoggedIn(!!data.user);
+    });
+  }, []);
 
   // Validate cart items against live DB data on mount
   useEffect(() => {
@@ -162,13 +171,29 @@ export default function CartPage() {
           <p className="font-serif text-2xl text-offwhite">{formatPrice(total())}</p>
         </div>
         <p className="text-xs text-muted">Shipping calculated at checkout</p>
-        <button
-          onClick={handleCheckout}
-          disabled={loading}
-          className="bg-burgundy text-offwhite px-12 py-4 text-xs tracking-widest uppercase hover:bg-burgundy-light transition-colors disabled:opacity-50"
-        >
-          {loading ? "Redirecting..." : "Proceed to Checkout"}
-        </button>
+        {isLoggedIn === false ? (
+          <div className="text-center space-y-3">
+            <p className="text-xs text-muted">Sign in to complete your purchase</p>
+            <Link
+              href="/login"
+              className="inline-block bg-burgundy text-offwhite px-12 py-4 text-xs tracking-widest uppercase hover:bg-burgundy-light transition-colors"
+            >
+              Sign In to Checkout
+            </Link>
+            <p className="text-xs text-muted">
+              Don&apos;t have an account?{" "}
+              <Link href="/signup" className="text-offwhite hover:text-burgundy transition-colors">Sign up</Link>
+            </p>
+          </div>
+        ) : (
+          <button
+            onClick={handleCheckout}
+            disabled={loading || isLoggedIn === null}
+            className="bg-burgundy text-offwhite px-12 py-4 text-xs tracking-widest uppercase hover:bg-burgundy-light transition-colors disabled:opacity-50"
+          >
+            {loading ? "Redirecting..." : "Proceed to Checkout"}
+          </button>
+        )}
       </div>
     </div>
   );

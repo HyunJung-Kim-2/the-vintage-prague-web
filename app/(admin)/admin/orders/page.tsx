@@ -7,7 +7,7 @@ export default async function AdminOrdersPage() {
   const supabase = await createClient();
   const { data: orders } = await supabase
     .from("orders")
-    .select("*, order_items(quantity, price_at_purchase, product:products(name))")
+    .select("*, order_items(quantity, price_at_purchase, product:products(name)), profile:profiles(email)")
     .order("created_at", { ascending: false });
 
   return (
@@ -22,6 +22,9 @@ export default async function AdminOrdersPage() {
                 <p className="text-muted text-xs mt-1">
                   {new Date(order.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
                 </p>
+                {order.profile?.email && (
+                  <p className="text-muted text-xs mt-1">{order.profile.email}</p>
+                )}
               </div>
               <div className="flex items-center gap-4">
                 <p className="text-offwhite">{formatPrice(order.total_amount, order.currency)}</p>
