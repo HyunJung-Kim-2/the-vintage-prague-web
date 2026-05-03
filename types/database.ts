@@ -5,14 +5,6 @@ export type Gender = "unisex" | "men" | "women";
 export type OrderStatus = "pending" | "paid" | "shipped" | "delivered" | "cancelled";
 export type Currency = "EUR" | "CZK";
 
-export interface Measurements {
-  shoulder?: string;
-  chest?: string;
-  waist?: string;
-  length?: string;
-  hips?: string;
-}
-
 export interface Profile {
   id: string;
   email: string;
@@ -32,8 +24,6 @@ export interface Product {
   price: number;
   size: string | null;
   gender: Gender;
-  color: string | null;
-  measurements: Measurements | null;
   stock: number;
   is_active: boolean;
   created_at: string;
