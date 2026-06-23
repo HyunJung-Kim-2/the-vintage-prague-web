@@ -7,8 +7,19 @@ export default async function AdminOrdersPage() {
   const supabase = await createClient();
   const { data: orders } = await supabase
     .from("orders")
-    .select("*, order_items(quantity, price_at_purchase, product:products(name)), profile:profiles(email)")
+    .select("*, order_items(quantity, price_at_purchase, product:products(name))")
     .order("created_at", { ascending: false });
+
+  // No FK between orders.user_id and profiles, so fetch emails separately and map them in
+  const userIds = [...new Set((orders ?? []).map((o) => o.user_id).filter(Boolean))];
+  const emailById = new Map<string, string>();
+  if (userIds.length > 0) {
+    const { data: profiles } = await supabase
+      .from("profiles")
+      .select("id, email")
+      .in("id", userIds);
+    for (const p of profiles ?? []) emailById.set(p.id, p.email);
+  }
 
   return (
     <div>
@@ -22,8 +33,8 @@ export default async function AdminOrdersPage() {
                 <p className="text-muted text-xs mt-1">
                   {new Date(order.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })}
                 </p>
-                {order.profile?.email && (
-                  <p className="text-muted text-xs mt-1">{order.profile.email}</p>
+                {order.user_id && emailById.get(order.user_id) && (
+                  <p className="text-muted text-xs mt-1">{emailById.get(order.user_id)}</p>
                 )}
               </div>
               <div className="flex items-center gap-4">

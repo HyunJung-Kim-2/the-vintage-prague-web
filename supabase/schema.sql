@@ -22,6 +22,25 @@ create policy "Users can update own profile"
   on public.profiles for update
   using (auth.uid() = id);
 
+-- Admins can read all profiles (for customer email in admin orders).
+-- SECURITY DEFINER avoids RLS recursion on the profiles table.
+create or replace function public.is_admin()
+returns boolean
+language sql
+security definer
+stable
+set search_path = public
+as $$
+  select exists (
+    select 1 from public.profiles
+    where id = auth.uid() and role = 'admin'
+  );
+$$;
+
+create policy "Admins can view all profiles"
+  on public.profiles for select
+  using (public.is_admin());
+
 -- Auto-create profile on signup
 create or replace function public.handle_new_user()
 returns trigger as $$
