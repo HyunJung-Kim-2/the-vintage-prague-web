@@ -77,7 +77,8 @@ export default function ProductForm({ product }: { product?: Product }) {
     router.refresh();
   }
 
-  const inputClass = "w-full bg-surface border border-border text-offwhite px-3 py-2 text-sm focus:outline-none focus:border-burgundy";
+  // text-base (16px) prevents iOS Safari from auto-zooming on focus; py-2.5 = larger touch target
+  const inputClass = "w-full bg-surface border border-border text-offwhite px-3 py-2.5 text-base sm:text-sm focus:outline-none focus:border-burgundy";
   const labelClass = "block text-xs tracking-widest uppercase text-muted mb-1";
 
   return (
