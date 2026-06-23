@@ -97,11 +97,13 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
           <FadeIn delay={0.2} className="mt-auto">
             <div className="border-t border-border pt-6">
               <AddToCartButton product={product} />
-              <p className="text-center text-xs text-muted mt-4 tracking-widest">
+              <p className={`text-center text-xs mt-4 tracking-widest ${
+                product.stock === 1 ? "text-burgundy-vivid" : "text-muted"
+              }`}>
                 {product.stock > 1
                   ? `${product.stock} available`
                   : product.stock === 1
-                  ? "Last piece"
+                  ? "Only one left — one of a kind"
                   : "Sold out"}
               </p>
             </div>

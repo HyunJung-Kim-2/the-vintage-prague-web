@@ -89,7 +89,7 @@ export default async function ProductsPage({
           <h1 className="font-serif text-4xl text-offwhite mb-2">
             {params.category ? categoryLabel(params.category) : "All Pieces"}
           </h1>
-          <p className="text-muted text-sm">{products?.length ?? 0} items</p>
+          <p className="text-muted text-sm">{products?.length ?? 0} {(products?.length ?? 0) === 1 ? "item" : "items"}</p>
         </div>
 
         {/* Search + Sort row */}

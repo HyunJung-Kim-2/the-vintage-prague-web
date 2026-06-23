@@ -105,7 +105,12 @@ export default function CartPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="font-serif text-3xl text-offwhite mb-10">Shopping Cart</h1>
+      <h1 className="font-serif text-3xl text-offwhite mb-10">
+        Shopping Cart
+        <span className="text-muted text-lg ml-3">
+          {items.reduce((n, i) => n + i.quantity, 0)} {items.reduce((n, i) => n + i.quantity, 0) === 1 ? "item" : "items"}
+        </span>
+      </h1>
 
       {warnings.length > 0 && (
         <div className="mb-6 border border-red-800 bg-red-950/30 p-4 space-y-1">
