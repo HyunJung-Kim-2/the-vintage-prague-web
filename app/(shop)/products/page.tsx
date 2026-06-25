@@ -86,6 +86,7 @@ export default async function ProductsPage({
       <FadeIn>
         {/* Header */}
         <div className="mb-10">
+          <p className="text-xs tracking-[0.4em] uppercase text-muted mb-4">Collection</p>
           <h1 className="font-serif text-4xl text-offwhite mb-2">
             {params.category ? categoryLabel(params.category) : "All Pieces"}
           </h1>

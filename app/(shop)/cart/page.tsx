@@ -87,8 +87,9 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="max-w-2xl mx-auto px-4 py-24 text-center">
-        <p className="font-serif text-3xl text-offwhite mb-4">Your cart is empty</p>
+      <div className="max-w-2xl mx-auto px-4 py-32 text-center">
+        <p className="text-xs tracking-[0.4em] uppercase text-muted mb-6">Your Bag</p>
+        <p className="font-serif text-3xl text-offwhite mb-6">Your cart is empty</p>
         {warnings.length > 0 && (
           <div className="mb-6 space-y-1">
             {warnings.map((w, i) => (
@@ -105,12 +106,13 @@ export default function CartPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h1 className="font-serif text-3xl text-offwhite mb-10">
-        Shopping Cart
-        <span className="text-muted text-lg ml-3">
+      <div className="mb-10">
+        <p className="text-xs tracking-[0.4em] uppercase text-muted mb-4">Your Bag</p>
+        <h1 className="font-serif text-3xl text-offwhite mb-2">Shopping Cart</h1>
+        <p className="text-muted text-sm">
           {items.reduce((n, i) => n + i.quantity, 0)} {items.reduce((n, i) => n + i.quantity, 0) === 1 ? "item" : "items"}
-        </span>
-      </h1>
+        </p>
+      </div>
 
       {warnings.length > 0 && (
         <div className="mb-6 border border-red-800 bg-red-950/30 p-4 space-y-1">
