@@ -26,21 +26,23 @@ export default function TrackingUpdater({
   }
 
   return (
-    <div className="flex items-center gap-2 mt-4 pt-4 border-t border-border">
-      <span className="text-xs tracking-widest uppercase text-muted shrink-0">Tracking</span>
-      <input
-        value={value}
-        onChange={(e) => { setValue(e.target.value); setSaved(false); }}
-        placeholder="Enter tracking number..."
-        className="flex-1 bg-surface border border-border text-offwhite px-3 py-1.5 text-xs focus:outline-none focus:border-burgundy placeholder:text-muted/50"
-      />
-      <button
-        onClick={save}
-        disabled={saving}
-        className="text-xs tracking-widest uppercase px-3 py-1.5 border border-border text-muted hover:border-offwhite hover:text-offwhite transition-colors disabled:opacity-40 shrink-0"
-      >
-        {saving ? "..." : saved ? "Saved ✓" : "Save"}
-      </button>
+    <div className="mt-4 pt-4 border-t border-border">
+      <span className="block text-xs tracking-widest uppercase text-muted mb-2">Tracking Number</span>
+      <div className="flex items-center gap-2">
+        <input
+          value={value}
+          onChange={(e) => { setValue(e.target.value); setSaved(false); }}
+          placeholder="Enter tracking number…"
+          className="flex-1 min-w-0 bg-surface border border-border text-offwhite px-3 py-2.5 text-base sm:text-sm focus:outline-none focus:border-burgundy placeholder:text-muted/50"
+        />
+        <button
+          onClick={save}
+          disabled={saving}
+          className="text-xs tracking-widest uppercase px-4 py-2.5 border border-border text-muted hover:border-offwhite hover:text-offwhite transition-colors disabled:opacity-40 shrink-0"
+        >
+          {saving ? "…" : saved ? "Saved ✓" : "Save"}
+        </button>
+      </div>
     </div>
   );
 }

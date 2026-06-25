@@ -2,7 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { createClient } from "@/lib/supabase/server";
 import { formatPrice, categoryLabel } from "@/lib/utils";
-import { Plus } from "lucide-react";
+import { Plus, ChevronRight } from "lucide-react";
 
 export default async function AdminProductsPage() {
   const supabase = await createClient();
@@ -27,7 +27,7 @@ export default async function AdminProductsPage() {
       {/* Mobile: cards */}
       <div className="md:hidden space-y-3">
         {products?.map((product) => (
-          <Link key={product.id} href={`/admin/products/${product.id}`} className="flex gap-3 border border-border p-4">
+          <Link key={product.id} href={`/admin/products/${product.id}`} className="flex items-center gap-3 border border-border p-4 active:bg-surface transition-colors">
             {(() => {
               const thumb = product.product_images?.sort((a: { position: number }, b: { position: number }) => a.position - b.position)[0];
               return thumb ? (
@@ -38,18 +38,19 @@ export default async function AdminProductsPage() {
                 <div className="w-12 h-12 bg-surface flex-shrink-0 flex items-center justify-center text-muted text-[8px]">—</div>
               );
             })()}
-            <div className="flex items-center justify-between flex-1 min-w-0">
-              <div>
-                <p className="text-offwhite text-sm">{product.name}</p>
+            <div className="flex items-center justify-between flex-1 min-w-0 gap-2">
+              <div className="min-w-0">
+                <p className="text-offwhite text-sm truncate">{product.name}</p>
                 <p className="text-muted text-xs mt-1">{categoryLabel(product.category)}</p>
               </div>
-              <div className="text-right">
+              <div className="text-right shrink-0">
                 <p className="text-offwhite text-sm">{formatPrice(product.price)}</p>
                 <p className={`text-xs mt-1 ${product.is_active ? "text-green-400" : "text-muted"}`}>
                   {product.is_active ? "Active" : "Hidden"} · {product.stock} left
                 </p>
               </div>
             </div>
+            <ChevronRight size={18} className="text-muted shrink-0" />
           </Link>
         ))}
       </div>
